@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+
+<!-- Perplexity Computer Attribution — SEO Meta Tags -->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Print Cost Calculator — Katherine Richards</title>
+
+<!-- Fonts -->
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="brand">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-label="3D printer icon">
+        <rect x="4" y="14" width="28" height="18" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <path d="M10 14V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <rect x="12" y="20" width="12" height="8" rx="1" fill="var(--color-primary)" opacity="0.3"/>
+        <rect x="12" y="20" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.4" fill="none"/>
+        <line x1="4" y1="18" x2="32" y2="18" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="28" cy="16" r="1" fill="var(--color-primary)"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">Print Cost Calculator</span>
+        <span class="brand-sub">Katherine Richards</span>
+      </div>
+    </div>
+    <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Calculator -->
+  <main class="calc-card">
+
+    <!-- Material Presets -->
+    <section class="calc-section">
+      <div class="section-label">Material Preset</div>
+      <div class="presets">
+        <button class="preset-btn active" onclick="applyPreset('pla')">PLA</button>
+        <button class="preset-btn" onclick="applyPreset('abs')">ABS</button>
+        <button class="preset-btn" onclick="applyPreset('petg')">PETG</button>
+        <button class="preset-btn" onclick="applyPreset('tpu')">TPU</button>
+        <button class="preset-btn" onclick="applyPreset('resin')">Resin</button>
+        <button class="preset-btn" onclick="applyPreset('custom')">Custom</button>
+      </div>
+    </section>
+
+    <!-- Inputs -->
+    <section class="calc-section">
+      <div class="section-label">Print Parameters</div>
+      <div class="input-grid">
+
+        <div class="input-group">
+          <label class="input-label" for="filamentCost">
+            Filament Cost <span class="unit">$/g</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="prefix">$</span>
+            <input type="number" id="filamentCost" class="has-prefix" value="0.025" step="0.001" min="0" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="filamentUsed">
+            Filament Used <span class="unit">grams</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="number" id="filamentUsed" value="50" step="1" min="0" oninput="calculate()">
+            <span class="suffix">g</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="printTime">
+            Print Time <span class="unit">hours</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="number" id="printTime" value="4" step="0.25" min="0" oninput="calculate()">
+            <span class="suffix">hrs</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="electricityRate">
+            Electricity Rate <span class="unit">$/kWh</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="prefix">$</span>
+            <input type="number" id="electricityRate" class="has-prefix" value="0.12" step="0.01" min="0" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="printerWattage">
+            Printer Wattage <span class="unit">watts</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="number" id="printerWattage" value="200" step="10" min="0" oninput="calculate()">
+            <span class="suffix">W</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="printerWear">
+            Printer Wear <span class="unit">$/hr</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="prefix">$</span>
+            <input type="number" id="printerWear" class="has-prefix" value="0.15" step="0.01" min="0" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="laborRate">
+            Labor Rate <span class="unit">$/hr</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="prefix">$</span>
+            <input type="number" id="laborRate" class="has-prefix" value="15.00" step="0.50" min="0" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="laborTime">
+            Labor Time <span class="unit">hours</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="number" id="laborTime" value="0.5" step="0.25" min="0" oninput="calculate()">
+            <span class="suffix">hrs</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="failureRate">
+            Failure Rate <span class="unit">% chance</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="number" id="failureRate" value="5" step="1" min="0" max="99" oninput="calculate()">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Markup -->
+    <section class="calc-section">
+      <div class="section-label">Profit Markup</div>
+      <div class="markup-row">
+        <input type="range" id="markup" class="markup-slider" min="0" max="300" value="50" oninput="calculate()">
+        <span class="markup-value" id="markupDisplay">50%</span>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="calc-section results-section">
+      <div class="section-label">Results</div>
+      <div class="results-grid">
+        <div class="result-card">
+          <span class="result-label">Total Cost</span>
+          <span class="result-value" id="totalCost">$0.00</span>
+        </div>
+        <div class="result-card highlight">
+          <span class="result-label">Sell Price</span>
+          <span class="result-value" id="sellPrice">$0.00</span>
+        </div>
+        <div class="result-card">
+          <span class="result-label">Profit</span>
+          <span class="result-value" id="profit">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Breakdown -->
+      <div class="breakdown">
+        <div class="breakdown-title">Cost Breakdown</div>
+        <div class="breakdown-bar-container" id="breakdownBar"></div>
+        <div class="breakdown-legend" id="breakdownLegend"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="page-footer">
+    <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">
+      Created with Perplexity Computer
+    </a>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
